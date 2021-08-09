@@ -1,0 +1,7 @@
+html {
+  background-color: white;
+}
+
+html[theme="dark"] {
+  background-color: black;
+}
