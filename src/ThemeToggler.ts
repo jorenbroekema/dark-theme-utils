@@ -1,25 +1,17 @@
 const template = document.createElement('template');
 template.innerHTML = `
   <style>
-    :host {
-      cursor: pointer;
-    }
-
-    :host(:focus) {
+    .btn:focus {
       outline: none;
-
-      border-radius: 12px;
-    }
-
-    :host(:focus) .container {
+      cursor: pointer;
       border: 2px solid var(--theme-toggler-focus-color, #6fa7df);
     }
 
-    .container {
+    .btn {
       display: inline-flex;
       position: relative;
       overflow: hidden;
-      border-radius: 12.5px;
+      border-radius: 999px;
       padding: 4px;
       border: 2px solid var(--theme-toggler-border-color, #374151);
       background-color: var(--theme-toggler-background-color, #f9fafb);
@@ -41,7 +33,7 @@ template.innerHTML = `
     .sun,
     .moon {
       font-size: 16px;
-      line-height: 17px;
+      line-height: 20px;
       width: 20px;
       transition: all 0.2s ease-in-out;
       transform: rotate(0deg);
@@ -83,11 +75,11 @@ template.innerHTML = `
       margin-top: 1px;
     }
   </style>
-  <div class="container">
+  <button class="btn">
     <div class="sun">☀️</div>
     <div class="moon">🌚</div>
     <div class="thumb"></div>
-  </div>
+  </button>
 `;
 
 const registeredComponents: ThemeToggler[] = [];
@@ -153,7 +145,6 @@ export class ThemeToggler extends HTMLElement {
   setup(): void {
     this.setupInitialTheme();
 
-    this.setAttribute('tabindex', '0');
     this.setAttribute('role', 'switch');
     this.setAttribute('aria-label', 'Site theme toggler, dark and light');
 

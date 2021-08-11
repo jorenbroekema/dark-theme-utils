@@ -5,6 +5,7 @@
     "@typescript-eslint/eslint-plugin": "^4.29.1",
     "@typescript-eslint/parser": "^4.29.1",
     "@web/test-runner": "^0.13.15",
+    "concurrently": "^6.2.1",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-import-resolver-typescript": "^2.4.0",
@@ -16,10 +17,11 @@
   },
   "scripts": {
     "compile": "rimraf dist && tsc",
+    "compile:watch": "tsc --watch --preserveWatchOutput",
     "lint": "tsc -p tsconfig.lint.json && eslint --ext .ts,.html . --ignore-path .gitignore && prettier \"**/*.ts\" --check --ignore-path .gitignore",
     "format": "eslint --ext .ts,.html . --fix --ignore-path .gitignore && prettier \"**/*.ts\" --write --ignore-path .gitignore",
     "test": "tsc && wtr --coverage",
-    "test:watch": "tsc && concurrently -k -r \"tsc --watch --preserveWatchOutput\" \"wtr --watch\"",
-    "start": "npm run compile && wds --app-index demo/index.html --open --watch"
+    "test:watch": "tsc && concurrently -k -r \"npm run compile:watch\" \"wtr --watch\"",
+    "start": "npm run compile && concurrently -k -r \"npm run compile:watch\" \"wds --app-index demo/index.html --open --watch\""
   }
 }
