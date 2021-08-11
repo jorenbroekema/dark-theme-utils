@@ -83,11 +83,11 @@ template.innerHTML = `
       margin-top: 1px;
     }
   </style>
-  <div class="container">
+  <button class="container">
     <div class="sun">☀️</div>
     <div class="moon">🌚</div>
     <div class="thumb"></div>
-  </div>
+  </button>
 `;
 
 const registeredComponents: ThemeToggler[] = [];
@@ -153,7 +153,6 @@ export class ThemeToggler extends HTMLElement {
   setup(): void {
     this.setupInitialTheme();
 
-    this.setAttribute('tabindex', '0');
     this.setAttribute('role', 'switch');
     this.setAttribute('aria-label', 'Site theme toggler, dark and light');
 
