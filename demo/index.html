@@ -6,10 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Demo</title>
     <link rel="stylesheet" href="style.css" />
-    <script src="/dist/prevent-fart.js"></script>
-    <script type="module" src="/dist/theme-toggler.js"></script>
+    <script type="module">
+      import { preventFart } from '../src/prevent-fart.js';
+
+      preventFart();
+    </script>
+    <script type="module" src="../theme-toggler.js"></script>
+    <script type="module" src="./foo-element.js"></script>
   </head>
   <body>
     <theme-toggler></theme-toggler>
+    <foo-element></foo-element>
   </body>
 </html>

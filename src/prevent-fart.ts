@@ -6,9 +6,11 @@
  * - for buildless dev servers, transform hook for html files, insert it in head
  * - for build steps, insert it in .html file(s) <head> during build w transform hooks
  */
-const userPrefersDark = window.matchMedia(
-  '(prefers-color-scheme: dark)',
-).matches;
-const darkTheme =
-  localStorage.getItem('theme-dark') || (userPrefersDark ? 'dark' : 'light');
-document.documentElement.setAttribute('theme', darkTheme);
+export function preventFart(): void {
+  const userPrefersDark = window.matchMedia(
+    '(prefers-color-scheme: dark)',
+  ).matches;
+  const darkTheme =
+    localStorage.getItem('theme-dark') || (userPrefersDark ? 'dark' : 'light');
+  document.documentElement.setAttribute('theme', darkTheme);
+}

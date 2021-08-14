@@ -14,6 +14,17 @@ module.exports = {
     'no-use-before-define': 'off',
     '@typescript-eslint/no-use-before-define': ['error'],
   },
+  overrides: [
+    {
+      files: ['scripts/**/*'],
+      rules: {
+        // scripts are dev-scripts, so dependencies can be in dev deps
+        'import/no-extraneous-dependencies': 'off',
+        // require from createRequire should be allowed for NodeJS scripts which use CJS deps
+        '@typescript-eslint/no-var-requires': 'off',
+      },
+    },
+  ],
   settings: {
     'import/resolver': {
       typescript: {},

@@ -18,6 +18,7 @@ yarn-error.log
 ## build artifacts
 /lib/
 /build/
+/dist-tsc/
 /dist/
 /bundlesize/dist/
 

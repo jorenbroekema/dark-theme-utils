@@ -1,3 +1,5 @@
+import { preventFart as _setupInitialTheme } from './prevent-fart';
+
 const template = document.createElement('template');
 template.innerHTML = `
   <style>
@@ -96,37 +98,48 @@ themeObserver.observe(document.documentElement, {
 });
 
 export class ThemeToggler extends HTMLElement {
-  get theme(): 'dark' | 'light' {
+  public get theme(): 'dark' | 'light' {
     return (this.getAttribute('theme') || 'light') as 'dark' | 'light';
   }
 
-  set theme(value: 'dark' | 'light') {
+  public set theme(value: 'dark' | 'light') {
     this.setAttribute('aria-checked', value === 'dark' ? 'true' : 'false');
     this.setAttribute('theme', value);
   }
 
-  boundKeyDown = this.keyDown.bind(this);
+  private boundKeyDown = this.keyDown.bind(this);
 
-  boundToggle = this.toggle.bind(this);
+  private boundToggle = this.toggle.bind(this);
 
-  shadowRoot = this.attachShadow({ mode: 'open' });
+  public shadowRoot = this.attachShadow({ mode: 'open' });
 
   constructor() {
     super();
-    registeredComponents.push(this);
-    this.shadowRoot.appendChild(template.content.cloneNode(true));
+    this.registerComponentToMO();
+    this.render();
   }
 
-  connectedCallback(): void {
+  protected connectedCallback(): void {
     this.setup();
   }
 
-  disconnectedCallback(): void {
+  protected disconnectedCallback(): void {
     this.removeEventListener('keydown', this.boundKeyDown);
     this.removeEventListener('click', this.boundToggle);
   }
 
-  toggle(): void {
+  // Override if you want to customize your toggler markup/styles
+  protected render(): void {
+    this.shadowRoot.appendChild(template.content.cloneNode(true));
+  }
+
+  // Override this if you need to listen to a different MO
+  // than the one we set up for you
+  protected registerComponentToMO(): void {
+    registeredComponents.push(this);
+  }
+
+  public toggle(): void {
     if (document.documentElement.getAttribute('theme') === 'light') {
       this.setTheme('dark', true);
     } else {
@@ -134,7 +147,7 @@ export class ThemeToggler extends HTMLElement {
     }
   }
 
-  setTheme(theme: 'dark' | 'light', store = false): void {
+  public setTheme(theme: 'dark' | 'light', store = false): void {
     this.theme = theme;
     document.documentElement.setAttribute('theme', theme);
     if (store) {
@@ -142,7 +155,7 @@ export class ThemeToggler extends HTMLElement {
     }
   }
 
-  setup(): void {
+  protected setup(): void {
     this.setupInitialTheme();
 
     this.setAttribute('role', 'switch');
@@ -152,21 +165,19 @@ export class ThemeToggler extends HTMLElement {
     this.addEventListener('click', this.boundToggle);
   }
 
-  setupInitialTheme(): void {
-    const userPrefersDark = window.matchMedia(
-      '(prefers-color-scheme: dark)',
-    ).matches;
+  public setupInitialTheme(): void {
+    // reuse preventFart script for theme initialization,
+    // but it does not actually prevent FART here, see Docs for more info
+    _setupInitialTheme();
+    this.setupColorSchemeListener();
+  }
 
-    // Priority is: 1) saved preference 2) browser/os preference 3) default 'light'
-    this.theme =
-      (localStorage.getItem('theme-dark') as 'dark' | 'light') ||
-      (userPrefersDark ? 'dark' : 'light');
-
+  protected setupColorSchemeListener(): void {
     // Respond to user preference changes on OS and Browser
     window
       .matchMedia('(prefers-color-scheme: dark)')
       .addEventListener('change', (ev) => {
-        // follow OS preference, by removing from preference local storage
+        // follow OS preference, by removing preference from local storage
         localStorage.removeItem('theme-dark');
 
         if (ev.matches) {
@@ -177,21 +188,19 @@ export class ThemeToggler extends HTMLElement {
       });
   }
 
-  keyDown(ev: KeyboardEvent): void {
+  protected keyDown(ev: KeyboardEvent): void {
+    ev.preventDefault();
     switch (ev.key) {
       case 'Enter':
       case ' ':
-        ev.preventDefault();
         this.toggle();
         break;
       case 'ArrowLeft':
       case 'ArrowUp':
-        ev.preventDefault();
         this.setTheme('dark', true);
         break;
       case 'ArrowRight':
       case 'ArrowDown':
-        ev.preventDefault();
         this.setTheme('light', true);
         break;
       /* no default */
