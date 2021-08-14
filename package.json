@@ -1,6 +1,6 @@
 {
   "name": "dark-theme-utils",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Dark mode theme utilties",
   "license": "MIT",
   "author": "Joren Broekema <joren.broekema@gmail.com>",
@@ -53,7 +53,8 @@
     "demo:watch": "npm run build && concurrently \"npm run compile:watch\" \"npm run demo:copy-files -- --watch\" \"node dist-tsc/scripts/rebundle.js\"",
     "format": "eslint --ext .ts,.html . --fix --ignore-path .gitignore && prettier \"**/*.ts\" --write --ignore-path .gitignore",
     "lint": "tsc -p tsconfig.lint.json && eslint --ext .ts,.html . --ignore-path .gitignore && prettier \"**/*.ts\" --check --ignore-path .gitignore",
-    "prepublishOnly": "npm run compile && cp {package.json,README.md,CHANGELOG.md,LICENSE} dist-tsc && cd dist-tsc",
+    "prepare-release": "npm run compile && node dist-tsc/scripts/copy-dist-files.js",
+    "release": "npm run prepare-release && cd dist-tsc && changeset publish",
     "test": "npm run compile && wtr --coverage",
     "test:watch": "npm run compile && concurrently -k -r \"npm run compile:watch\" \"wtr --watch\""
   },
