@@ -15,7 +15,7 @@ With 1 small exception (`ThemeMixin`), these are completely dependency-free and 
 
 ### Theme Toggler
 
-![toggler gif](./assets/toggler.gif)
+![toggler gif](https://github.com/jorenbroekema/dark-theme-utils/assets/toggler.gif)
 
 Toggler UI component that toggles the theme between "light" to "dark".
 
