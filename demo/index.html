@@ -6,10 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Demo</title>
     <link rel="stylesheet" href="style.css" />
-    <script type="module">
-      import { preventFart } from '../src/prevent-fart.js';
-
-      preventFart();
+    <script>
+      const userPrefersDark = window.matchMedia(
+        '(prefers-color-scheme: dark)',
+      ).matches;
+      const darkTheme =
+        localStorage.getItem('theme-dark') ||
+        (userPrefersDark ? 'dark' : 'light');
+      document.documentElement.setAttribute('theme', darkTheme);
     </script>
     <script type="module" src="../theme-toggler.js"></script>
     <script type="module" src="./foo-element.js"></script>
