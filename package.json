@@ -27,9 +27,11 @@
     "@typescript-eslint/eslint-plugin": "^4.29.1",
     "@typescript-eslint/parser": "^4.29.1",
     "@web/dev-server": "^0.1.21",
+    "@web/dev-server-esbuild": "^0.2.12",
     "@web/rollup-plugin-copy": "^0.3.0",
     "@web/rollup-plugin-html": "^1.9.1",
     "@web/test-runner": "^0.13.15",
+    "@web/test-runner-playwright": "^0.8.7",
     "chokidar": "^3.5.2",
     "concurrently": "^6.2.1",
     "eslint": "^7.32.0",
@@ -40,8 +42,8 @@
     "lint-staged": "^11.1.2",
     "prettier": "^2.3.2",
     "rimraf": "^3.0.2",
-    "typescript": "^4.3.5",
-    "rollup": "^2.56.2"
+    "rollup": "^2.56.2",
+    "typescript": "^4.3.5"
   },
   "scripts": {
     "build": "npm run compile && npm run demo:copy-files && rollup -c rollup.config.js",
@@ -50,13 +52,14 @@
     "compile:watch": "tsc --watch --preserveWatchOutput",
     "demo": "npm run build && wds",
     "demo:copy-files": "node dist-tsc/scripts/copy-demo-files.js",
-    "demo:watch": "npm run build && concurrently \"npm run compile:watch\" \"npm run demo:copy-files -- --watch\" \"node dist-tsc/scripts/rebundle.js\"",
+    "demo:watch": "npm run build && concurrently \"npm run compile:watch\" \"npm run demo:copy-files -- --watch\" \"node dist-tsc/scripts/rebundle.js\" \"wds\"",
     "format": "eslint --ext .ts,.html . --fix --ignore-path .gitignore && prettier \"**/*.ts\" --write --ignore-path .gitignore",
     "lint": "tsc -p tsconfig.lint.json && eslint --ext .ts,.html . --ignore-path .gitignore && prettier \"**/*.ts\" --check --ignore-path .gitignore",
     "prepare-release": "npm run compile && node dist-tsc/scripts/copy-dist-files.js",
     "release": "npm run prepare-release && cd dist-tsc && changeset publish",
-    "test": "npm run compile && wtr --coverage",
-    "test:watch": "npm run compile && concurrently -k -r \"npm run compile:watch\" \"wtr --watch\""
+    "test": "wtr",
+    "test:watch": "wtr --config web-test-runner-chromium.config.mjs",
+    "test:report": "npm run test && wds --root-dir coverage/lcov-report"
   },
   "keywords": [
     "dark",

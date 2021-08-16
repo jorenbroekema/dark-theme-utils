@@ -1,8 +1,8 @@
 import { exec } from 'child_process';
-import { createRequire } from 'module';
+import mod from 'module';
 import { watch } from 'chokidar';
 
-const require = createRequire(import.meta.url);
+const require = mod.createRequire(import.meta.url);
 
 const chokidar = require('chokidar') as { watch: typeof watch };
 
@@ -13,9 +13,7 @@ function copyDemoFiles() {
 }
 
 if (process.argv[2] === '--watch') {
-  console.log('hello??');
   chokidar.watch('./demo/!(*.ts)').on('all', (event, path) => {
-    console.log(path);
     exec(`cp ${path} ./dist-tsc/demo`);
   });
 }

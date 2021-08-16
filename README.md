@@ -1,7 +1,5 @@
 # Dark Theme utils
 
-> Caution: Alpha state, needs tests..
-
 A repository containing some useful utilities for dark mode.
 
 All of these packages work everywhere, built on browser standards (Web Components).
