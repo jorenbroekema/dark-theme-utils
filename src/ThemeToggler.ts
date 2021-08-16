@@ -87,9 +87,13 @@ template.innerHTML = `
 const registeredComponents: ThemeToggler[] = [];
 const themeObserver = new MutationObserver(() => {
   registeredComponents.forEach((comp) => {
-    comp.theme = (document.documentElement.getAttribute('theme') || 'light') as
-      | 'dark'
-      | 'light';
+    const themeAttr = document.documentElement.getAttribute('theme');
+    if (
+      comp.theme !== themeAttr &&
+      (themeAttr === 'dark' || themeAttr === 'light')
+    ) {
+      comp.theme = themeAttr;
+    }
   });
 });
 themeObserver.observe(document.documentElement, {
@@ -99,7 +103,7 @@ themeObserver.observe(document.documentElement, {
 
 export class ThemeToggler extends HTMLElement {
   public get theme(): 'dark' | 'light' {
-    return (this.getAttribute('theme') || 'light') as 'dark' | 'light';
+    return this.getAttribute('theme') as 'dark' | 'light';
   }
 
   public set theme(value: 'dark' | 'light') {
@@ -111,11 +115,10 @@ export class ThemeToggler extends HTMLElement {
 
   private boundToggle = this.toggle.bind(this);
 
-  public shadowRoot = this.attachShadow({ mode: 'open' });
-
   constructor() {
     super();
     this.registerComponentToMO();
+    this.attachShadow({ mode: 'open' });
     this.render();
   }
 
@@ -130,7 +133,7 @@ export class ThemeToggler extends HTMLElement {
 
   // Override if you want to customize your toggler markup/styles
   protected render(): void {
-    this.shadowRoot.appendChild(template.content.cloneNode(true));
+    this.shadowRoot?.appendChild(template.content.cloneNode(true));
   }
 
   // Override this if you need to listen to a different MO
@@ -168,24 +171,27 @@ export class ThemeToggler extends HTMLElement {
   public setupInitialTheme(): void {
     // reuse preventFart script for theme initialization,
     // but it does not actually prevent FART here, see Docs for more info
-    _setupInitialTheme();
+    this.theme = _setupInitialTheme();
     this.setupColorSchemeListener();
   }
 
   protected setupColorSchemeListener(): void {
     // Respond to user preference changes on OS and Browser
-    window
-      .matchMedia('(prefers-color-scheme: dark)')
-      .addEventListener('change', (ev) => {
+
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener(
+      'change',
+      // cannot emulate prefers-color-scheme, ignoring for test coverage
+      /* c8 ignore next 9 */
+      (ev) => {
         // follow OS preference, by removing preference from local storage
         localStorage.removeItem('theme-dark');
-
         if (ev.matches) {
           this.setTheme('dark');
         } else {
           this.setTheme('light');
         }
-      });
+      },
+    );
   }
 
   protected keyDown(ev: KeyboardEvent): void {
@@ -205,5 +211,10 @@ export class ThemeToggler extends HTMLElement {
         break;
       /* no default */
     }
+  }
+
+  public reset(): void {
+    this.setTheme('light');
+    localStorage.removeItem('theme-dark');
   }
 }

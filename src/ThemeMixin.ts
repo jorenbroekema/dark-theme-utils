@@ -1,6 +1,8 @@
 /* eslint-disable max-classes-per-file */
 import { dedupeMixin } from '@open-wc/dedupe-mixin';
 
+// Expected any type for mixins, this is enforced by TS
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare type Constructor<T> = new (...args: any[]) => T;
 declare type themeType = 'dark' | 'light' | '';
 declare class ThemeHost {
@@ -46,8 +48,8 @@ export const ThemeMixinImplementation: ThemeMixinType = (superclass) =>
       this.setAttribute('theme', val);
     }
 
-    // passing args required for mixin pattern since it might be required for passed in superclass
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    // passing args + any type required for mixin pattern since it might be required for passed in superclass
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
     constructor(...args: any[]) {
       super();
       registeredComponents.push(this);
