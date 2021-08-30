@@ -1,5 +1,11 @@
 # dark-theme-utils
 
+## 0.3.1
+
+### Patch Changes
+
+- b581bfb: Move initial theme setting to connectedCallback, as you should not set attributes in constructor of custom elements. This will produce a fatal error when doing document.createElement().
+
 ## 0.3.0
 
 ### Minor Changes
