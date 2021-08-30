@@ -173,6 +173,18 @@ export class ThemeToggler extends HTMLElement {
     // but it does not actually prevent FART here, see Docs for more info
     this.theme = _setupInitialTheme();
     this.setupColorSchemeListener();
+    this.setupThemeTransition();
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  protected setupThemeTransition(): void {
+    // Delay this by animation frame so it is not transitioning things on initial render
+    requestAnimationFrame(() => {
+      document.documentElement.style.setProperty(
+        '--theme-transition',
+        'background 0.3s ease-in-out, color 0.6s ease-in-out, fill 0.6s ease-in-out',
+      );
+    });
   }
 
   protected setupColorSchemeListener(): void {
@@ -216,5 +228,11 @@ export class ThemeToggler extends HTMLElement {
   public reset(): void {
     this.setTheme('light');
     localStorage.removeItem('theme-dark');
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  public teardown(): void {
+    this.reset();
+    document.documentElement.style.removeProperty('--theme-transition');
   }
 }
