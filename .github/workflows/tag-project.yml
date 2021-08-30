@@ -13,9 +13,9 @@ jobs:
           echo "event number '${{ github.event.issue.number }}'"
           echo "column name '${{ fromJSON('["To do", "In progress"]')[github.event_name == 'pull_request'] }}'"
 
-      # - name: Create or Update Project Card
-      #   uses: peter-evans/create-or-update-project-card@v1
-      #   with:
-      #     project-name: Dark theme utils
-      #     column-name: ${{ fromJSON('["To do", "In progress"]')[github.event_name == 'pull_request'] }}
-      #     issue-number: ${{ github.event.number }}
+      - name: Create or Update Project Card
+        uses: peter-evans/create-or-update-project-card@v1
+        with:
+          project-name: Dark theme utils
+          column-name: ${{ fromJSON('["To do", "In progress"]')[github.event_name == 'pull_request'] }}
+          issue-number: ${{ github.event.number }}
