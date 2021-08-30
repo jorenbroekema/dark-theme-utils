@@ -19,6 +19,7 @@ class FooElement extends ThemeMixin(HTMLElement) {
           height: 20px;
           display: block;
           background-color: black;
+          transition: var(--theme-transition);
         }
 
         :host([theme="dark"]) {

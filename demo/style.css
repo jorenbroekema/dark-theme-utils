@@ -1,5 +1,6 @@
 html {
   background-color: white;
+  transition: var(--theme-transition);
 }
 
 html[theme='dark'] {
