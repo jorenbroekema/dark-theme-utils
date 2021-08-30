@@ -18,7 +18,7 @@ With 1 small exception (`ThemeMixin`), these are completely dependency-free and 
 Toggler UI component that toggles the theme between "light" to "dark".
 
 #### Toggler Features
-
+f
 - Visual UI toggle
 - Accessible
 - Extendible
