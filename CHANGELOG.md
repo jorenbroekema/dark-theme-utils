@@ -1,5 +1,11 @@
 # dark-theme-utils
 
+## 0.3.2
+
+### Patch Changes
+
+- 3744c0e: Add repository field to package.json for NPM.
+
 ## 0.3.1
 
 ### Patch Changes
