@@ -1,6 +1,12 @@
 /* eslint-disable max-classes-per-file */
 import { dedupeMixin } from '@open-wc/dedupe-mixin';
 
+declare global {
+  interface HTMLElement {
+    connectedCallback?(): void;
+  }
+}
+
 // Expected any type for mixins, this is enforced by TS
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare type Constructor<T> = new (...args: any[]) => T;
@@ -53,6 +59,12 @@ export const ThemeMixinImplementation: ThemeMixinType = (superclass) =>
     constructor(...args: any[]) {
       super();
       registeredComponents.push(this);
+    }
+
+    connectedCallback() {
+      if (super.connectedCallback) {
+        super.connectedCallback();
+      }
       const docTheme = document.documentElement.getAttribute('theme') || '';
       if (docTheme === 'light' || docTheme === 'dark' || docTheme === '') {
         this.theme = docTheme;

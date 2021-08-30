@@ -1,9 +1,11 @@
+/* eslint-disable max-classes-per-file */
 import {
   expect,
   fixture as _fixture,
   defineCE,
   nextFrame,
 } from '@open-wc/testing';
+import { LitElement } from 'lit';
 import { preventFart } from '../src/prevent-fart';
 import { ThemeMixin } from '../src/ThemeMixin';
 
@@ -43,5 +45,14 @@ describe('ThemeMixin', () => {
     await nextFrame();
     expect(el.getAttribute('theme')).to.equal('dark');
     expect(el.theme).to.equal('dark');
+  });
+
+  it('also functions with subclasses that use connectedCallback', async () => {
+    class TestElLit extends ThemeMixin(LitElement) {}
+    const tagLit = defineCE(TestElLit);
+    const el = await fixture(`<${tagLit}></${tagLit}>`);
+    expect(el.theme).to.equal('light');
+    expect(el.getAttribute('theme')).to.equal('light');
+    // super.connectedCallback call is tested through coverage (100%)
   });
 });

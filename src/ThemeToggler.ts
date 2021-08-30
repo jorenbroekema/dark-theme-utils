@@ -122,11 +122,11 @@ export class ThemeToggler extends HTMLElement {
     this.render();
   }
 
-  protected connectedCallback(): void {
+  public connectedCallback(): void {
     this.setup();
   }
 
-  protected disconnectedCallback(): void {
+  public disconnectedCallback(): void {
     this.removeEventListener('keydown', this.boundKeyDown);
     this.removeEventListener('click', this.boundToggle);
   }
