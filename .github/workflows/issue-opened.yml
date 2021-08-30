@@ -1,0 +1,13 @@
+on:
+  issues:
+    types: [opened]
+jobs:
+  createCard:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create Project Card for issue
+        uses: peter-evans/create-or-update-project-card@v1
+        with:
+          project-name: Dark theme utils
+          column-name: To do
+          issue-number: ${{ github.event.issue.number }}

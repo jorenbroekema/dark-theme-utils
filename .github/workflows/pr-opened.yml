@@ -1,0 +1,13 @@
+on:
+  pull_request_target:
+    type: [opened]
+jobs:
+  createCard:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create Project Card for PR
+        uses: peter-evans/create-or-update-project-card@v1
+        with:
+          project-name: Dark theme utils
+          column-name: In progress
+          issue-number: ${{ github.event.number }}

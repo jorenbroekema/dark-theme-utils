@@ -4,6 +4,7 @@
   "description": "Dark mode theme utilties",
   "license": "MIT",
   "author": "Joren Broekema <joren.broekema@gmail.com>",
+  "repository": "https://github.com/jorenbroekema/dark-theme-utils",
   "type": "module",
   "main": "index.js",
   "files": [
