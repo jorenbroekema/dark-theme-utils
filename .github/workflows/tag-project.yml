@@ -7,12 +7,6 @@ jobs:
   createCard:
     runs-on: ubuntu-latest
     steps:
-      - name: Echo some stuff
-        run: |
-          echo "event name '${{ github.event_name }}'"
-          echo "event number '${{ github.event.issue.number }}'"
-          echo "column name '${{ fromJSON('["To do", "In progress"]')[github.event_name == 'pull_request'] }}'"
-
       - name: Create or Update Project Card
         uses: peter-evans/create-or-update-project-card@v1
         with:
