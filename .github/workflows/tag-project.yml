@@ -10,7 +10,7 @@ jobs:
       - name: Echo some stuff
         run: |
           echo "event name '${{ github.event_name }}'"
-          echo "event number '${{ github.event_number }}'"
+          echo "event number '${{ github.event.issue.number }}'"
           echo "column name '${{ fromJSON('["To do", "In progress"]')[github.event_name == 'pull_request'] }}'"
 
       # - name: Create or Update Project Card
