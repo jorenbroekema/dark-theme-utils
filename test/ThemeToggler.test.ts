@@ -4,14 +4,14 @@ import '../theme-toggler';
 
 describe('ThemeMixin', () => {
   const fixture = _fixture as (arg: string) => Promise<ThemeToggler>;
+  let el: ThemeToggler;
 
   afterEach(() => {
-    localStorage.removeItem('theme-dark');
-    document.documentElement.setAttribute('theme', 'light');
+    el.teardown();
   });
 
   it('renders a visual toggle element', async () => {
-    const el = await fixture(`<theme-toggler></theme-toggler>`);
+    el = await fixture(`<theme-toggler></theme-toggler>`);
     expect(el).shadowDom.to.equal(`
       <button class="btn">
         <div class="sun">☀️</div>
@@ -22,7 +22,7 @@ describe('ThemeMixin', () => {
   });
 
   it('has a public toggle method to toggle the theme', async () => {
-    const el = await fixture(`<theme-toggler></theme-toggler>`);
+    el = await fixture(`<theme-toggler></theme-toggler>`);
     expect(el.theme).to.equal('light');
     el.toggle();
     expect(el.theme).to.equal('dark');
@@ -31,7 +31,7 @@ describe('ThemeMixin', () => {
   });
 
   it('has a public setTheme method to toggle the theme, optionally storing to localStorage', async () => {
-    const el = await fixture(`<theme-toggler></theme-toggler>`);
+    el = await fixture(`<theme-toggler></theme-toggler>`);
     expect(el.theme).to.equal('light');
     el.setTheme('dark');
     expect(el.theme).to.equal('dark');
@@ -43,12 +43,12 @@ describe('ThemeMixin', () => {
   });
 
   it('has a public reset method which clear localStorage and sets theme back to light', async () => {
-    const el = await fixture(`<theme-toggler></theme-toggler>`);
+    el = await fixture(`<theme-toggler></theme-toggler>`);
     el.toggle();
   });
 
   it('stores user preference to local storage', async () => {
-    const el = await fixture(`<theme-toggler></theme-toggler>`);
+    el = await fixture(`<theme-toggler></theme-toggler>`);
     expect(localStorage.getItem('theme-dark')).to.be.null;
 
     /**
@@ -120,26 +120,39 @@ describe('ThemeMixin', () => {
     el.reset();
   });
 
+  it('sets a default theme transition CSS custom property', async () => {
+    await fixture(`<theme-toggler></theme-toggler>`);
+    expect(
+      document.documentElement.style.getPropertyValue('--theme-transition'),
+    ).to.equal(
+      'background 0.3s ease-in-out, color 0.6s ease-in-out, fill 0.6s ease-in-out',
+    );
+    el.teardown();
+    expect(
+      document.documentElement.style.getPropertyValue('--theme-transition'),
+    ).to.equal('');
+  });
+
   describe('Accessibility', () => {
     it('is accessible', async () => {
-      const el = await fixture(`<theme-toggler></theme-toggler>`);
+      await fixture(`<theme-toggler></theme-toggler>`);
       expect(el).to.be.accessible;
     });
 
     it('uses role "switch" to make clear to the user that it is a state-toggling button', async () => {
-      const el = await fixture(`<theme-toggler></theme-toggler>`);
+      await fixture(`<theme-toggler></theme-toggler>`);
       expect(el.getAttribute('role')).to.equal('switch');
     });
 
     it('has an aria-label to make clear to the user what the button does', async () => {
-      const el = await fixture(`<theme-toggler></theme-toggler>`);
+      await fixture(`<theme-toggler></theme-toggler>`);
       expect(el.getAttribute('aria-label')).to.equal(
         'Site theme toggler, dark and light',
       );
     });
 
     it('has an aria-checked attribute which is required for switch role buttons', async () => {
-      const el = await fixture(`<theme-toggler></theme-toggler>`);
+      await fixture(`<theme-toggler></theme-toggler>`);
       expect(el.getAttribute('aria-checked')).to.equal('false');
       el.toggle();
       expect(el.getAttribute('aria-checked')).to.equal('true');
