@@ -61,7 +61,8 @@
     "release": "npm run prepare-release && cd dist-tsc && changeset publish",
     "test": "wtr",
     "test:watch": "wtr --config web-test-runner-chromium.config.mjs",
-    "test:report": "npm run test || true && wds --root-dir coverage/lcov-report"
+    "test:report": "npm run test || true && wds --root-dir coverage/lcov-report",
+    "prepare": "husky install"
   },
   "keywords": [
     "dark",
