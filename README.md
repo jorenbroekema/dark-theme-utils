@@ -42,7 +42,9 @@ Extending the toggler is also possible:
 import { ThemeToggler } from 'dark-theme-utils';
 
 class CustomThemeToggler extends ThemeToggler {
-
+  // Change this if you want to rely on a 
+  // different key for localStorage, default is 'theme-dark'
+  _localStorageKey = 'my-theme';
 }
 customElements.define('custom-theme-toggler', CustomThemeToggler);
 ```
