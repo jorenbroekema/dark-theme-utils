@@ -1,5 +1,11 @@
 # dark-theme-utils
 
+## 0.3.4
+
+### Patch Changes
+
+- b9df4dc: Remove postinstall script husky as it is not intended to run when end-users install dark-theme-utils. Make it a prepare script instead with npx.
+
 ## 0.3.3
 
 ### Patch Changes
