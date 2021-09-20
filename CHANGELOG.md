@@ -1,5 +1,11 @@
 # dark-theme-utils
 
+## 0.3.5
+
+### Patch Changes
+
+- ca85f37: Fix \_localStorageKey so that prevent-fart / initial theme setting also takes this key into account.
+
 ## 0.3.4
 
 ### Patch Changes
