@@ -1,5 +1,11 @@
 # dark-theme-utils
 
+## 0.3.3
+
+### Patch Changes
+
+- 44d0830: Allow changing the key for localStorage on which the theme setting is stored, for subclassers of ThemeToggler.
+
 ## 0.3.2
 
 ### Patch Changes
