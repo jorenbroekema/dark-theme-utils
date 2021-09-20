@@ -57,7 +57,7 @@
     "demo:watch": "npm run build && concurrently \"npm run compile:watch\" \"npm run demo:copy-files -- --watch\" \"node dist-tsc/scripts/rebundle.js\" \"wds\"",
     "format": "eslint --ext .ts,.html . --fix --ignore-path .gitignore && prettier \"**/*.ts\" --write --ignore-path .gitignore",
     "lint": "tsc -p tsconfig.lint.json && eslint --ext .ts,.html . --ignore-path .gitignore && prettier \"**/*.ts\" --check --ignore-path .gitignore",
-    "prepare-release": "npm run compile && node dist-tsc/scripts/copy-dist-files.js",
+    "prepare-release": "npm run compile && node dist-tsc/scripts/copy-dist-files.js && npm set-script prepare \"\"",
     "release": "npm run prepare-release && cd dist-tsc && changeset publish",
     "test": "wtr",
     "test:watch": "wtr --config web-test-runner-chromium.config.mjs",
