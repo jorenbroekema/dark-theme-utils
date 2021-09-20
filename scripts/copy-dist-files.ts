@@ -1,4 +1,5 @@
 import { exec } from 'child_process';
+import path from 'path';
 
 const fileArr = [
   'package.json',
@@ -15,7 +16,10 @@ const copyCmd = fileArr.reduce((acc, curr, index) => {
   if (index === fileArr.length - 1) {
     suffix = '';
   }
-  return `${acc} cp -r ./${curr} dist-tsc ${suffix}`;
+
+  const dir = path.dirname(curr);
+
+  return `${acc} cp -r ./${curr} dist-tsc${dir ? `/${dir}` : ''} ${suffix}`;
 }, '');
 
 exec(copyCmd);
