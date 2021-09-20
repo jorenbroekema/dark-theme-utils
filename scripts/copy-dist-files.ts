@@ -6,6 +6,7 @@ const fileArr = [
   'CHANGELOG.md',
   'LICENSE',
   '.changeset',
+  'scripts/prepare.cjs',
 ];
 
 const copyCmd = fileArr.reduce((acc, curr, index) => {
