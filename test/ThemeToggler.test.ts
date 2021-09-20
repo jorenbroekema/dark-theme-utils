@@ -1,13 +1,21 @@
-import { expect, fixture as _fixture } from '@open-wc/testing';
+import { expect, fixture as _fixture, defineCE } from '@open-wc/testing';
 import { ThemeToggler } from '../src/ThemeToggler';
 import '../theme-toggler';
 
-describe('ThemeMixin', () => {
+describe('ThemeToggler', () => {
   const fixture = _fixture as (arg: string) => Promise<ThemeToggler>;
+  const subclassFixture = _fixture as (arg: string) => Promise<Subclasser>;
   let el: ThemeToggler;
+  let subclassEl: Subclasser;
+
+  class Subclasser extends ThemeToggler {
+    protected _localStorageKey = 'foo-dark';
+  }
+  const tag = defineCE(Subclasser);
 
   afterEach(() => {
-    el.teardown();
+    el?.teardown();
+    subclassEl?.teardown();
   });
 
   it('renders a visual toggle element', async () => {
@@ -121,7 +129,7 @@ describe('ThemeMixin', () => {
   });
 
   it('sets a default theme transition CSS custom property', async () => {
-    await fixture(`<theme-toggler></theme-toggler>`);
+    el = await fixture(`<theme-toggler></theme-toggler>`);
     expect(
       document.documentElement.style.getPropertyValue('--theme-transition'),
     ).to.equal(
@@ -135,29 +143,40 @@ describe('ThemeMixin', () => {
 
   describe('Accessibility', () => {
     it('is accessible', async () => {
-      await fixture(`<theme-toggler></theme-toggler>`);
+      el = await fixture(`<theme-toggler></theme-toggler>`);
       expect(el).to.be.accessible;
     });
 
     it('uses role "switch" to make clear to the user that it is a state-toggling button', async () => {
-      await fixture(`<theme-toggler></theme-toggler>`);
+      el = await fixture(`<theme-toggler></theme-toggler>`);
       expect(el.getAttribute('role')).to.equal('switch');
     });
 
     it('has an aria-label to make clear to the user what the button does', async () => {
-      await fixture(`<theme-toggler></theme-toggler>`);
+      el = await fixture(`<theme-toggler></theme-toggler>`);
       expect(el.getAttribute('aria-label')).to.equal(
         'Site theme toggler, dark and light',
       );
     });
 
     it('has an aria-checked attribute which is required for switch role buttons', async () => {
-      await fixture(`<theme-toggler></theme-toggler>`);
+      el = await fixture(`<theme-toggler></theme-toggler>`);
       expect(el.getAttribute('aria-checked')).to.equal('false');
       el.toggle();
       expect(el.getAttribute('aria-checked')).to.equal('true');
       el.toggle();
       expect(el.getAttribute('aria-checked')).to.equal('false');
+    });
+  });
+
+  describe('Subclassers', () => {
+    it('supports overriding the local storage key', async () => {
+      subclassEl = await subclassFixture(`<${tag}></${tag}>`);
+      expect(localStorage.getItem('foo-dark')).to.be.null;
+      subclassEl.setTheme('dark', true);
+      expect(localStorage.getItem('foo-dark')).to.equal('dark');
+      subclassEl.setTheme('light', true);
+      expect(localStorage.getItem('foo-dark')).to.equal('light');
     });
   });
 });

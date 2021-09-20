@@ -115,6 +115,8 @@ export class ThemeToggler extends HTMLElement {
 
   private boundToggle = this.toggle.bind(this);
 
+  protected _localStorageKey = 'theme-dark';
+
   constructor() {
     super();
     this.registerComponentToMO();
@@ -154,7 +156,7 @@ export class ThemeToggler extends HTMLElement {
     this.theme = theme;
     document.documentElement.setAttribute('theme', theme);
     if (store) {
-      localStorage.setItem('theme-dark', theme);
+      localStorage.setItem(this._localStorageKey, theme);
     }
   }
 
@@ -196,7 +198,7 @@ export class ThemeToggler extends HTMLElement {
       /* c8 ignore next 9 */
       (ev) => {
         // follow OS preference, by removing preference from local storage
-        localStorage.removeItem('theme-dark');
+        localStorage.removeItem(this._localStorageKey);
         if (ev.matches) {
           this.setTheme('dark');
         } else {
@@ -227,7 +229,7 @@ export class ThemeToggler extends HTMLElement {
 
   public reset(): void {
     this.setTheme('light');
-    localStorage.removeItem('theme-dark');
+    localStorage.removeItem(this._localStorageKey);
   }
 
   // eslint-disable-next-line class-methods-use-this
