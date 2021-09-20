@@ -5,6 +5,9 @@ on:
     branches:
       - main
 
+env:
+  HUSKY: 0
+
 jobs:
   release:
     # Prevents changesets action from creating a PR on forks
