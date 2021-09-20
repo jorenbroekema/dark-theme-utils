@@ -62,7 +62,7 @@
     "test": "wtr",
     "test:watch": "wtr --config web-test-runner-chromium.config.mjs",
     "test:report": "npm run test || true && wds --root-dir coverage/lcov-report",
-    "prepare": "husky install"
+    "postinstall": "husky install"
   },
   "keywords": [
     "dark",
