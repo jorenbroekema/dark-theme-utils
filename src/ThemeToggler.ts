@@ -173,7 +173,7 @@ export class ThemeToggler extends HTMLElement {
   public setupInitialTheme(): void {
     // reuse preventFart script for theme initialization,
     // but it does not actually prevent FART here, see Docs for more info
-    this.theme = _setupInitialTheme();
+    this.theme = _setupInitialTheme(this._localStorageKey);
     this.setupColorSchemeListener();
     this.setupThemeTransition();
   }
