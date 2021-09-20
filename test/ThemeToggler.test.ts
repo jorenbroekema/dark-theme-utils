@@ -3,8 +3,7 @@ import { ThemeToggler } from '../src/ThemeToggler';
 import '../theme-toggler';
 
 describe('ThemeToggler', () => {
-  const fixture = _fixture as (arg: string) => Promise<ThemeToggler>;
-  const subclassFixture = _fixture as (arg: string) => Promise<Subclasser>;
+  const fixture = _fixture as (arg: string) => Promise<Subclasser>;
   let el: ThemeToggler;
   let subclassEl: Subclasser;
 
@@ -171,12 +170,17 @@ describe('ThemeToggler', () => {
 
   describe('Subclassers', () => {
     it('supports overriding the local storage key', async () => {
-      subclassEl = await subclassFixture(`<${tag}></${tag}>`);
+      subclassEl = await fixture(`<${tag}></${tag}>`);
       expect(localStorage.getItem('foo-dark')).to.be.null;
       subclassEl.setTheme('dark', true);
       expect(localStorage.getItem('foo-dark')).to.equal('dark');
       subclassEl.setTheme('light', true);
       expect(localStorage.getItem('foo-dark')).to.equal('light');
+      subclassEl.teardown();
+
+      localStorage.setItem('foo-dark', 'dark');
+      subclassEl = await fixture(`<${tag}></${tag}>`);
+      expect(subclassEl.theme).to.equal('dark');
     });
   });
 });

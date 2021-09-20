@@ -8,11 +8,11 @@
  *
  * c8 ignore is because we can't emulate user preferring darkmode through prefers-color-scheme
  */
-export function preventFart(): 'dark' | 'light' {
+export function preventFart(localStorageKey = 'theme-dark'): 'dark' | 'light' {
   const userPrefersDark = window.matchMedia(
     '(prefers-color-scheme: dark)',
   ).matches;
-  const darkTheme = (localStorage.getItem('theme-dark') ||
+  const darkTheme = (localStorage.getItem(localStorageKey) ||
     /* c8 ignore next */ (userPrefersDark ? 'dark' : 'light')) as
     | 'dark'
     | 'light';
