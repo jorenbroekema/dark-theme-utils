@@ -49,7 +49,7 @@ class CustomThemeToggler extends ThemeToggler {
 customElements.define('custom-theme-toggler', CustomThemeToggler);
 ```
 
-### Theme Mixin
+### Theme Mixin!
 
 When you have components utilizing ShadowDOM style encapsulation, you won't be able to style those components based on a global theme attribute out of the box.
 
