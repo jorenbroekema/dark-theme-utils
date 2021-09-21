@@ -1,8 +1,10 @@
 html {
   background-color: white;
-  transition: var(--theme-transition);
+  color: black;
+  transition: var(--theme-background-transition), var(--theme-color-transition);
 }
 
 html[theme='dark'] {
   background-color: black;
+  color: white;
 }

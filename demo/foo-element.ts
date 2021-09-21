@@ -7,6 +7,9 @@ class FooElement extends ThemeMixin(HTMLElement) {
   }
 
   connectedCallback() {
+    if (super.connectedCallback) {
+      super.connectedCallback();
+    }
     this.render();
   }
 
@@ -19,7 +22,7 @@ class FooElement extends ThemeMixin(HTMLElement) {
           height: 20px;
           display: block;
           background-color: black;
-          transition: var(--theme-transition);
+          transition: var(--theme-background-transition);
         }
 
         :host([theme="dark"]) {
