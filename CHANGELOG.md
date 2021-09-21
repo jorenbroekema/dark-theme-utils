@@ -1,5 +1,11 @@
 # dark-theme-utils
 
+## 0.4.0
+
+### Minor Changes
+
+- 66df75b: BREAKING: split up --theme-transition prop which used to cover background, color and fill, into separate CSS properties --theme-background-transition, --theme-color-transition, --theme-fill-transition. Also added a protected property \_cssPropNames which you can override as a subclasser if you just want to change the names of these CSS custom properties to match your library/design system.
+
 ## 0.3.5
 
 ### Patch Changes
