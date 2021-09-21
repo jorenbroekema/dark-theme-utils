@@ -9,6 +9,12 @@ describe('ThemeToggler', () => {
 
   class Subclasser extends ThemeToggler {
     protected _localStorageKey = 'foo-dark';
+
+    protected _cssPropNames = {
+      background: '--foo-background-transition',
+      color: '--foo-color-transition',
+      fill: '--foo-fill-transition',
+    };
   }
   const tag = defineCE(Subclasser);
 
@@ -127,17 +133,31 @@ describe('ThemeToggler', () => {
     el.reset();
   });
 
-  it('sets a default theme transition CSS custom property', async () => {
+  it('sets default theme transition CSS custom properties', async () => {
     el = await fixture(`<theme-toggler></theme-toggler>`);
+
+    ['color', 'fill'].forEach((prop) => {
+      expect(
+        document.documentElement.style.getPropertyValue(
+          `--theme-${prop}-transition`,
+        ),
+      ).to.equal(`${prop} 0.6s ease-in-out`);
+    });
+
     expect(
-      document.documentElement.style.getPropertyValue('--theme-transition'),
-    ).to.equal(
-      'background 0.3s ease-in-out, color 0.6s ease-in-out, fill 0.6s ease-in-out',
-    );
+      document.documentElement.style.getPropertyValue(
+        '--theme-background-transition',
+      ),
+    ).to.equal('background 0.3s ease-in-out');
     el.teardown();
-    expect(
-      document.documentElement.style.getPropertyValue('--theme-transition'),
-    ).to.equal('');
+
+    ['background', 'color', 'fill'].forEach((prop) => {
+      expect(
+        document.documentElement.style.getPropertyValue(
+          `--theme-${prop}-transition`,
+        ),
+      ).to.equal('');
+    });
   });
 
   describe('Accessibility', () => {
@@ -181,6 +201,33 @@ describe('ThemeToggler', () => {
       localStorage.setItem('foo-dark', 'dark');
       subclassEl = await fixture(`<${tag}></${tag}>`);
       expect(subclassEl.theme).to.equal('dark');
+    });
+
+    it('supports setting your own theme transition CSS custom property names', async () => {
+      subclassEl = await fixture(`<${tag}></${tag}>`);
+
+      ['color', 'fill'].forEach((prop) => {
+        expect(
+          document.documentElement.style.getPropertyValue(
+            `--foo-${prop}-transition`,
+          ),
+        ).to.equal(`${prop} 0.6s ease-in-out`);
+      });
+      expect(
+        document.documentElement.style.getPropertyValue(
+          '--foo-background-transition',
+        ),
+      ).to.equal('background 0.3s ease-in-out');
+
+      subclassEl.teardown();
+
+      ['background', 'color', 'fill'].forEach((prop) => {
+        expect(
+          document.documentElement.style.getPropertyValue(
+            `--foo-${prop}-transition`,
+          ),
+        ).to.equal('');
+      });
     });
   });
 });

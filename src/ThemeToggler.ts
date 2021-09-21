@@ -117,6 +117,12 @@ export class ThemeToggler extends HTMLElement {
 
   protected _localStorageKey = 'theme-dark';
 
+  protected _cssPropNames = {
+    background: '--theme-background-transition',
+    color: '--theme-color-transition',
+    fill: '--theme-fill-transition',
+  } as { [key: string]: string };
+
   constructor() {
     super();
     this.registerComponentToMO();
@@ -183,9 +189,16 @@ export class ThemeToggler extends HTMLElement {
     // Delay this by animation frame so it is not transitioning things on initial render
     requestAnimationFrame(() => {
       document.documentElement.style.setProperty(
-        '--theme-transition',
-        'background 0.3s ease-in-out, color 0.6s ease-in-out, fill 0.6s ease-in-out',
+        this._cssPropNames.background,
+        `background 0.3s ease-in-out`,
       );
+
+      ['color', 'fill'].forEach((prop) => {
+        document.documentElement.style.setProperty(
+          this._cssPropNames[prop],
+          `${prop} 0.6s ease-in-out`,
+        );
+      });
     });
   }
 
@@ -235,6 +248,8 @@ export class ThemeToggler extends HTMLElement {
   // eslint-disable-next-line class-methods-use-this
   public teardown(): void {
     this.reset();
-    document.documentElement.style.removeProperty('--theme-transition');
+    ['background', 'color', 'fill'].forEach((prop) => {
+      document.documentElement.style.removeProperty(this._cssPropNames[prop]);
+    });
   }
 }

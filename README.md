@@ -42,12 +42,21 @@ Extending the toggler is also possible:
 import { ThemeToggler } from 'dark-theme-utils';
 
 class CustomThemeToggler extends ThemeToggler {
-  // Change this if you want to rely on a 
-  // different key for localStorage, default is 'theme-dark'
   _localStorageKey = 'my-theme';
+
+  _cssPropNames = {
+    background: '--foo-bg',
+    color: '--foo-color',
+    fill: '--foo-fill',
+  }
 }
 customElements.define('custom-theme-toggler', CustomThemeToggler);
 ```
+
+You can override all protected/public methods, and here's two props that you may also change:
+
+- `_localStorageKey`: Change this if you want to rely on a different key for localStorage, default is 'theme-dark' but you may want something less generic.
+- `_cssPropNames`: Change this if you want to use different CSS custom prop names for the background, color and fill transition that the toggler sets up by default and which you can use on your page. See demo files for example.
 
 ### Theme Mixin
 
